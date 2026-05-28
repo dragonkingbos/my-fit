@@ -217,7 +217,7 @@ def get_gemini():
         st.error("⚠️ 请在 Streamlit Secrets 中配置 GEMINI_API_KEY")
         st.stop()
     genai.configure(api_key=api_key)
-    return genai.GenerativeModel("gemini-2.0-flash")
+    return genai.GenerativeModel("gemini-1.5-flash")
 
 # ─── Session State Init ───────────────────────────────────────────────────────
 def init_state():
