@@ -212,11 +212,12 @@ def get_gemini():
     try:
         api_key = st.secrets["GEMINI_API_KEY"]
         genai.configure(api_key=api_key)
-        return genai.GenerativeModel("models/gemini-1.5-flash")
+        # 换成这个最基础的名字，它在所有版本中都存在
+        return genai.GenerativeModel("gemini-pro")
     except Exception as e:
-        st.error(f"链接 AI　失败：{str(e)}")
+        st.error(f"连接 AI 失败：{str(e)}")
         st.stop()
-
+        
 # ─── Session State Init ───────────────────────────────────────────────────────
 def init_state():
     defaults = {
