@@ -213,11 +213,16 @@ def get_gemini():
         api_key = st.secrets["GEMINI_API_KEY"]
         genai.configure(api_key=api_key)
         
-        # 直接指定 1.5 版本，不再让它自动选 2.5
-        return genai.GenerativeModel("gemini-1.5-flash")
+        # 2026 最新标准：必须加上 models/ 前缀
+        # 且使用 1.5 版本以避开 2.0/2.5 的极低配额限制
+        return genai.GenerativeModel("models/gemini-1.5-flash")
     except Exception as e:
-        st.error(f"连接 AI 失败：{str(e)}")
-        st.stop()
+        # 如果还是报错，尝试使用最通用的基础模型名
+        try:
+            return genai.GenerativeModel("models/gemini-pro")
+        except:
+            st.error(f"连接 AI 失败：{str(e)}")
+            st.stop()
         
 # ─── Session State Init ───────────────────────────────────────────────────────
 def init_state():
