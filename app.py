@@ -213,15 +213,8 @@ def get_gemini():
         api_key = st.secrets["GEMINI_API_KEY"]
         genai.configure(api_key=api_key)
         
-        # 自动获取当前账号可用的第一个模型名称
-        available_models = [m.name for m in genai.list_models() if 'generateContent' in m.supported_generation_methods]
-        if not available_models:
-            st.error("此 API Key 下暂无可用模型，请检查 Google AI Studio 权限")
-            st.stop()
-            
-        # 优先使用 flash 模型（快且免费额度多），否则用第一个可用的
-        model_name = "models/gemini-1.5-flash" if "models/gemini-1.5-flash" in available_models else available_models[0]
-        return genai.GenerativeModel(model_name)
+        # 直接指定 1.5 版本，不再让它自动选 2.5
+        return genai.GenerativeModel("gemini-1.5-flash")
     except Exception as e:
         st.error(f"连接 AI 失败：{str(e)}")
         st.stop()
