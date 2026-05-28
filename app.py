@@ -210,14 +210,17 @@ h3 { font-size: 0.95rem !important; color: #aaaaaa; font-weight: 400; }
 # ─── Gemini Init ─────────────────────────────────────────────────────────────
 def get_gemini():
     try:
+        if "GEMINI_API_KEY" not in st.secrets:
+            st.error("请在 streamlit secrets 中配置 GEMINI_API_KEY")
+            st.stop()
+            
         api_key = st.secrets["GEMINI_API_KEY"]
-    except Exception:
-        api_key = None
-    if not api_key:
-        st.error("⚠️ 请在 Streamlit Secrets 中配置 GEMINI_API_KEY")
-        st.stop()
-    genai.configure(api_key=api_key)
-    return genai.GenerativeModel("gemini-1.5-flash")
+        genai.configure(api_key=api_key)
+        
+    return genai.GenerativeModel(model_name="gemini-1.5-flash")
+except Exception as e:
+    st.error(f"链接 AI　失败：{str(e)}")
+st.stop()
 
 # ─── Session State Init ───────────────────────────────────────────────────────
 def init_state():
