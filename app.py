@@ -209,11 +209,13 @@ h3 { font-size: 0.95rem !important; color: #aaaaaa; font-weight: 400; }
 
 # ─── Gemini Init ─────────────────────────────────────────────────────────────
 def get_gemini():
-    api_key = st.secrets["GEMINI_API_KEY"]
-    genai.configure(api_key=api_key)
-    return genai.GenerativeModel("gemini-1.5-flash")
-    st.error(f"链接 AI　失败：{str(e)}")
-st.stop()
+    try:
+        api_key = st.secrets["GEMINI_API_KEY"]
+        genai.configure(api_key=api_key)
+        return genai.GenerativeModel("gemini-1.5-flash")
+    except Exception as e:
+        st.error(f"链接 AI　失败：{str(e)}")
+        st.stop()
 
 # ─── Session State Init ───────────────────────────────────────────────────────
 def init_state():
